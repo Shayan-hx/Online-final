@@ -17,8 +17,18 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
+from onlinecourse import views
 
+app_name = 'onlinecourse'
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('onlinecourse/', include('onlinecourse.urls')),
+    
+    path('admin/', admin.site.urls), # need this
+    path('onlinecourse/', include('onlinecourse.urls')),# need this
+    path(route='', view=views.CourseListView.as_view(), name='index'),# need this
+    path('registration/', views.registration_request, name='registration'),
+    path('login/', views.login_request, name='login'),
+    path('logout/', views.logout_request, name='logout'),
+    path('<int:pk>/', views.CourseDetailView.as_view(), name='course_details'),
+    path('<int:course_id>/submit/', views.submit, name="submit"),
+    path('course/<int:course_id>/submission/<int:submission_id>/result/', views.show_exam_result, name="exam_result"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
